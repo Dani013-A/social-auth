@@ -1,0 +1,21 @@
+# Virtual environment
+group_env/
+venv/
+env/
+.venv/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Databases
+db.sqlite3
+
+# Static files (collected)
+staticfiles/
+static_root/
+
+# OS files
+.DS_Store
+Thumbs.db
