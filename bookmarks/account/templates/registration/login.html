@@ -3,21 +3,34 @@
 {% block title %}Log-in{% endblock %}
 
 {% block content %}
-    <h1>Log-in</h1>
-    {% if form.errors %}
-        <p>
-            Your username and password didn't match.
-            Please try again.
-        </p>
-    {% else %}
-        <p>Please, use the following form to log-in:</p>
-    {% endif %}
-    <div class="login-form">
+<div class="login-wrapper">
+    <div class="login-card">
+        <h1>Log In</h1>
+
+        {% if form.errors %}
+        <div class="alert-error">
+            Your username and password didn't match. Please try again.
+        </div>
+        {% endif %}
+
+        <p style="text-align: center;">Please use the following form to log-in:</p>
+        <br>
+
         <form action="{% url 'login' %}" method="post">
-            {{ form.as_p }}
             {% csrf_token %}
+            {% for field in form %}
+            <p>
+                <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                {{ field }}
+            </p>
+            {% endfor %}
             <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" value="Log-in"></p>
+            <input type="submit" value="Log In" class="btn btn-full">
         </form>
+
+        <div class="login-extras">
+            <a href="{% url 'password_reset' %}">Forgot your password?</a>
+        </div>
     </div>
+</div>
 {% endblock %}

@@ -1,45 +1,61 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}{% endblock %}</title>
-    <link href="{% static "base.css" %}" rel="stylesheet">
-</head>
-<body>
-    <div id="header">
-        <span class="logo">Bookmarks</span>
-        {% if request.user.is_authenticated %}
-            <ul class="menu">
-                <li {% if section == "dashboard" %}class="selected"{% endif %}>
-                    <a href="{% url "dashboard" %}">My dashboard</a>
-                </li>
-                <li {% if section == "images" %}class="selected"{% endif %}>
-                    <a href="#">Images</a>
-                </li>
-                <li {% if section == "people" %}class="selected"{% endif %}>
-                    <a href="#">People</a>
-                </li>
-            </ul>
-        {% endif %}
-        <span class="user">
-            {% if request.user.is_authenticated %}
-                Hello {{ request.user.username }},
-                <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" style="background:none; border:none; 
-                    padding:0; cursor:pointer; color:#FFFDD0;"> 
-                        Logout
-                    </button>
-                </form>
-            {% else %}
-                <a href="{% url "login" %}">Log-in</a>
-            {% endif %}
-        </span>
-    </div>
+<html lang="en">
 
-    <div id="content">
-        {% block content %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bookmarks{% endblock %}</title>
+    <link href="{% static 'base.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <header>
+            <nav>
+                <span class="logo">Bookmarks</span>
+                {% if request.user.is_authenticated %}
+                <ul class="menu">
+                    <li {% if section == 'dashboard' %}class="selected" {% endif %}>
+                        <a href="{% url 'dashboard' %}">My dashboard</a>
+                    </li>
+                    <li {% if section == 'images' %}class="selected" {% endif %}>
+                        <a href="#">Images</a>
+                    </li>
+                    <li {% if section == 'people' %}class="selected" {% endif %}>
+                        <a href="#">People</a>
+                    </li>
+                </ul>
+                {% endif %}
+                <span class="user">
+                    {% if request.user.is_authenticated %}
+                    Hello {{ request.user.username }},
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">Logout</button>
+                    </form>
+                    {% endif %}
+                </span>
+            </nav>
+        </header>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+                </li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+
+        <main id="content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
     </div>
 </body>
+
 </html>
